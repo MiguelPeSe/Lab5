@@ -32,7 +32,7 @@ jobs:
     needs: job-en-la-nube
     
     # Aquí llamamos directamente a tu máquina usando su etiqueta exacta
-    runs-on: [self-hosted, Default]
+    runs-on: [self-hosted, T06W17]
     
     steps:
       - name: Checkout en tu maquina local
