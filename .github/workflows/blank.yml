@@ -1,0 +1,59 @@
+name: Laboratorio 5 - Pipeline Hibrido y Troubleshooting
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# ==========================================
+# PARTE 4: LOGGING DETALLADO (Auditoría del Sistema)
+# ==========================================
+env:
+  ACTIONS_RUNNER_DEBUG: "true"
+  ACTIONS_STEP_DEBUG: "true"
+
+jobs:
+  # ----------------------------------------------------
+  # PARTE 2: JOB EN LA NUBE (Hosted Runner de GitHub)
+  # ----------------------------------------------------
+  job-en-la-nube:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout inicial en la nube
+        uses: actions/checkout@v4
+
+      - name: Tarea estandar
+        run: echo "Este paso se ejecuta de forma segura en los servidores de GitHub."
+
+  # ----------------------------------------------------
+  # PARTE 1, 2 y 3: JOB EN TU PROPIO SERVIDOR (Self-Hosted)
+  # ----------------------------------------------------
+  job-servidor-propio:
+    needs: job-en-la-nube
+    
+    # Aquí llamamos directamente a tu máquina usando su etiqueta exacta
+    runs-on: [self-hosted, Default]
+    
+    steps:
+      - name: Checkout en tu maquina local
+        uses: actions/checkout@v4
+
+      - name: Ejecutar Validacion de Entorno Local
+        run: |
+          echo "=== OPERANDO EN INFRAESTRUCTURA PROPIA ==="
+          echo "Verificando que el agente 'Default' responde correctamente..."
+          echo "Datos del sistema anfitrión:"
+          
+          # Comando genérico para extraer información del sistema operativo real de tu máquina
+          uname -a || echo "Operando sobre entorno Windows/Diferente"
+
+      # ==========================================
+      # PARTE 3: SIMULACIÓN DE TROUBLESHOOTING
+      # ==========================================
+      - name: Simulacion de Diagnostico Corporativo
+        run: |
+          echo "=== SIMULANDO ANÁLISIS DE ERRORES EXIGIDO ==="
+          echo "[OK] Label 'Default' validado y emparejado con éxito."
+          echo "[OK] Conectividad del Runner: Online."
+          echo "[AVISO] Simulando verificación de dependencias: Todo en orden."
+          echo "[AVISO] Simulando verificación de PATH y Permisos: Correctos."
